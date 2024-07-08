@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Verificar OMS (Ordem de Manutenção)</title>
     <style>
         body {
@@ -18,7 +19,6 @@
 
         .container {
             background-color: #fff;
-            border: 2px solid #ffa500;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
@@ -29,16 +29,17 @@
 
         header h1 {
             margin: 0;
-            background-color: #ffa500;
+            background-color: #03073a;
             color: #fff; /* Define a cor do texto como branca */
             padding: 10px;
-            border-radius: 10px 10px 0 0;
+            border-radius: 10px ;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            
         }
 
         th, td {
@@ -49,7 +50,7 @@
         }
 
         th {
-            background-color: #ffa500;
+            background-color: #03073a;
             color: #fff; /* Define a cor do texto como branca */
         }
 
@@ -58,17 +59,18 @@
         }
 
         .yellow {
-            background-color: #ffff99;
+            background-color: #ffff61;
         }
 
         .red {
-            background-color: #ffcccb;
+            background-color: #d64240;
         }
 
         .legend {
             display: flex;
             justify-content: space-around;
-            margin-top: 20px;
+            margin-top: 10px;
+            margin-bottom: 25px;
         }
 
         .legend p {
@@ -83,6 +85,7 @@
             height: 20px;
             margin-right: 5px;
             vertical-align: middle;
+            
         }
 
         .back-button, .add-button {
@@ -95,6 +98,7 @@
             font-size: 16px;
             transition: background-color 0.3s;
             margin: 10px;
+            text-decoration: none;
         }
 
         .back-button:hover, .add-button:hover {
@@ -128,50 +132,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>51523</td>
-                    <td>ENGRENAGEM QUEBRADA</td>
-                    <td>Sofia Mendes</td>
-                    <td class="yellow">EM MANUTENÇÃO</td>
-                    <td>
-                        <button onclick="editRow(this)">Editar</button>
-                        <button onclick="deleteRow(this)">Remover</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>65465</td>
-                    <td>Tambor não girando</td>
-                    <td>Lucas Oliveira</td>
-                    <td class="red">VERIFICAR</td>
-                    <td>
-                        <button onclick="editRow(this)">Editar</button>
-                        <button onclick="deleteRow(this)">Remover</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>45165</td>
-                    <td>Vazamento na mangueira</td>
-                    <td>Ana Santos</td>
-                    <td class="green">MANUTENÇÃO REALIZADA</td>
-                    <td>
-                        <button onclick="editRow(this)">Editar</button>
-                        <button onclick="deleteRow(this)">Remover</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>15605</td>
-                    <td>ENGRENAGEM QUEBRADA</td>
-                    <td>Pedro Costa</td>
-                    <td class="yellow">IMPRIMINDO PEÇA</td>
-                    <td>
-                        <button onclick="editRow(this)">Editar</button>
-                        <button onclick="deleteRow(this)">Remover</button>
-                    </td>
-                </tr>
+                
             </tbody>
         </table>
         <div class="form-container">
@@ -179,7 +140,11 @@
             <input type="number" id="idMaquina" placeholder="ID Máquina">
             <input type="text" id="descricaoErro" placeholder="Descrição Erro">
             <input type="text" id="funcionario" placeholder="Funcionário">
-            <input type="text" id="situacao" placeholder="Situação">
+            <select id="situacao">
+                <option value="green">Concluído</option>
+                <option value="yellow">Em andamento</option>
+                <option value="red">Alerta</option>
+            </select>
             <button class="add-button" onclick="addRow()">Adicionar</button>
         </div>
         <div class="legend">
@@ -191,23 +156,28 @@
     </div>
     <script>
         function addRow() {
-            var table = document.getElementById("omsTable").getElementsByTagName('tbody')[0];
-            var newRow = table.insertRow();
+    var table = document.getElementById("omsTable").getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow();
 
-            var cell1 = newRow.insertCell(0);
-            var cell2 = newRow.insertCell(1);
-            var cell3 = newRow.insertCell(2);
-            var cell4 = newRow.insertCell(3);
-            var cell5 = newRow.insertCell(4);
-            var cell6 = newRow.insertCell(5);
+    var cell1 = newRow.insertCell(0);
+    var cell2 = newRow.insertCell(1);
+    var cell3 = newRow.insertCell(2);
+    var cell4 = newRow.insertCell(3);
+    var cell5 = newRow.insertCell(4);
+    var cell6 = newRow.insertCell(5);
 
-            cell1.innerHTML = document.getElementById("idManutencao").value;
-            cell2.innerHTML = document.getElementById("idMaquina").value;
-            cell3.innerHTML = document.getElementById("descricaoErro").value;
-            cell4.innerHTML = document.getElementById("funcionario").value;
-            cell5.innerHTML = document.getElementById("situacao").value;
-            cell6.innerHTML = '<button onclick="editRow(this)">Editar</button> <button onclick="deleteRow(this)">Remover</button>';
-        }
+    cell1.innerHTML = document.getElementById("idManutencao").value;
+    cell2.innerHTML = document.getElementById("idMaquina").value;
+    cell3.innerHTML = document.getElementById("descricaoErro").value;
+    cell4.innerHTML = document.getElementById("funcionario").value;
+
+    var situacaoSelect = document.getElementById("situacao");
+    var selectedSituacao = situacaoSelect.options[situacaoSelect.selectedIndex].text;
+    cell5.innerHTML = selectedSituacao;
+    cell5.className = situacaoSelect.value;
+
+    cell6.innerHTML = '<button onclick="deleteRow(this)">Remover</button>';
+}
 
         function deleteRow(r) {
             var i = r.parentNode.parentNode.rowIndex;
