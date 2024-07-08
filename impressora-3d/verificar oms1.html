@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar OMS (Ordem de Manutenção)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #03073a;
+            color: #fff; /* Define a cor do texto como branca */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            border: 2px solid #ffa500;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            background-color: #ffa500;
+            color: #fff; /* Define a cor do texto como branca */
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            color: #000; /* Define a cor do texto das células como preta */
+        }
+
+        th {
+            background-color: #ffa500;
+            color: #fff; /* Define a cor do texto como branca */
+        }
+
+        .green {
+            background-color: #90ee90;
+        }
+
+        .yellow {
+            background-color: #ffff99;
+        }
+
+        .red {
+            background-color: #ffcccb;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .legend p {
+            margin: 0;
+            font-weight: bold;
+            color: #000; /* Define a cor do texto como preta */
+        }
+
+        .legend span {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .back-button, .add-button {
+            color: #fff; /* Define a cor do texto como branca */
+            background-color: #03073a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin: 10px;
+        }
+
+        .back-button:hover, .add-button:hover {
+            background-color: hsl(250, 3%, 64%);
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .form-container input {
+            margin: 5px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Verificar OMS (Ordem de Manutenção)</h1>
+        </header>
+        <table id="omsTable">
+            <thead>
+                <tr>
+                    <th>ID MANUTENÇÃO</th>
+                    <th>ID MÁQUINA</th>
+                    <th>DESCRIÇÃO ERRO</th>
+                    <th>FUNCIONÁRIO</th>
+                    <th>SITUAÇÃO</th>
+                    <th>AÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>51523</td>
+                    <td>ENGRENAGEM QUEBRADA</td>
+                    <td>Sofia Mendes</td>
+                    <td class="yellow">EM MANUTENÇÃO</td>
+                    <td>
+                        <button onclick="editRow(this)">Editar</button>
+                        <button onclick="deleteRow(this)">Remover</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>65465</td>
+                    <td>Tambor não girando</td>
+                    <td>Lucas Oliveira</td>
+                    <td class="red">VERIFICAR</td>
+                    <td>
+                        <button onclick="editRow(this)">Editar</button>
+                        <button onclick="deleteRow(this)">Remover</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>45165</td>
+                    <td>Vazamento na mangueira</td>
+                    <td>Ana Santos</td>
+                    <td class="green">MANUTENÇÃO REALIZADA</td>
+                    <td>
+                        <button onclick="editRow(this)">Editar</button>
+                        <button onclick="deleteRow(this)">Remover</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>15605</td>
+                    <td>ENGRENAGEM QUEBRADA</td>
+                    <td>Pedro Costa</td>
+                    <td class="yellow">IMPRIMINDO PEÇA</td>
+                    <td>
+                        <button onclick="editRow(this)">Editar</button>
+                        <button onclick="deleteRow(this)">Remover</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-container">
+            <input type="number" id="idManutencao" placeholder="ID Manutenção">
+            <input type="number" id="idMaquina" placeholder="ID Máquina">
+            <input type="text" id="descricaoErro" placeholder="Descrição Erro">
+            <input type="text" id="funcionario" placeholder="Funcionário">
+            <input type="text" id="situacao" placeholder="Situação">
+            <button class="add-button" onclick="addRow()">Adicionar</button>
+        </div>
+        <div class="legend">
+            <p><span class="green"></span> Concluído</p>
+            <p><span class="yellow"></span> Em andamento</p>
+            <p><span class="red"></span> Alerta</p>
+        </div>
+        <a href="navbar-impressora-3d.html" class="back-button">Voltar</a>
+    </div>
+    <script>
+        function addRow() {
+            var table = document.getElementById("omsTable").getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow();
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+            var cell6 = newRow.insertCell(5);
+
+            cell1.innerHTML = document.getElementById("idManutencao").value;
+            cell2.innerHTML = document.getElementById("idMaquina").value;
+            cell3.innerHTML = document.getElementById("descricaoErro").value;
+            cell4.innerHTML = document.getElementById("funcionario").value;
+            cell5.innerHTML = document.getElementById("situacao").value;
+            cell6.innerHTML = '<button onclick="editRow(this)">Editar</button> <button onclick="deleteRow(this)">Remover</button>';
+        }
+
+        function deleteRow(r) {
+            var i = r.parentNode.parentNode.rowIndex;
+            document.getElementById("omsTable").deleteRow(i);
+        }
+
+        function editRow(r) {
+            var row = r.parentNode.parentNode;
+            document.getElementById("idManutencao").value = row.cells[0].innerHTML;
+            document.getElementById("idMaquina").value = row.cells[1].innerHTML;
+            document.getElementById("descricaoErro").value = row.cells[2].innerHTML;
+            document.getElementById("funcionario").value = row.cells[3].innerHTML;
+            document.getElementById("situacao").value = row.cells[4].innerHTML;
+            deleteRow(r);
+        }
+    </script>
+</body>
+</html>
